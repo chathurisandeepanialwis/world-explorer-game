@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geography Match & Explore</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .match-item {
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .match-item.selected {
+            background-color: #d1e7ff;
+        }
+
+        #region-questions {
+            display: none;
+        }
+
+        .region-map {
+            max-width: 100%;
+            height: auto;
+        }
+        .match-image{
+            max-width: 80px;
+            height: auto;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Travel Explorer Quest</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="map.html">Explore</a></li>
+                    <li class="nav-item"><a class="nav-link" href="badges.html">Badges</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container mt-4">
+        <h1>Geography Match & Explore</h1>
+        <p>Match the places with their countries. Then, explore a region with questions!</p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="list-group" id="places-list">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="list-group" id="countries-list">
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary mt-3" id="check-match">Check Matches</button>
+
+        <div id="region-selection" class="mt-4">
+            <h2>Select a Region to Explore</h2>
+            <select class="form-select" id="region-select">
+                <option value="">Select a Region</option>
+                <option value="europe">Europe</option>
+                <option value="asia">Asia</option>
+                <option value="africa">Africa</option>
+                <option value="north-america">North America</option>
+                <option value="south-america">South America</option>
+                <option value="australia">Australia</option>
+            </select>
+        </div>
+
+        <div id="region-questions" class="mt-4">
+            <h2 id="region-title"></h2>
+            <img src="" alt="Region Map" class="region-map img-fluid" id="region-map-img">
+            <div id="question-container">
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const places = [
+            { name: "Eiffel Tower", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Tour_Eiffel_Wikimedia_Commons.jpg/800px-Tour_Eiffel_Wikimedia_Commons.jpg" },
+            { name: "Great Wall", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/2009-0522-China-8457_Great_Wall_near_Jinshanling.jpg/800px-2009-0522-China-8457_Great_Wall_near_Jinshanling.jpg" },
+            { name: "Pyramids of Giza", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Giza_pyramids.jpg/800px-Giza_pyramids.jpg" },
+            { name: "Statue of Liberty", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Statue_of_Liberty_7_%28vertical%29.jpg/800px-Statue_of_Liberty_7_%28vertical%29.jpg" },
+            { name: "Amazon Rainforest", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Amazon_rainforest_near_Tef%C3%A9.jpg/800px-Amazon_rainforest_near_Tef%C3%A9.jpg" },
+            { name: "Sydney Opera House", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Sydney_Opera_House_Sails.jpg/800px-Sydney_Opera_House_Sails.jpg" }
+        ];
+        const countries = ["France", "China", "Egypt", "USA", "Brazil", "Australia"];
+        const matches = {
+            "Eiffel Tower": "France",
+            "Great Wall": "China",
+            "Pyramids of Giza": "Egypt",
+            "Statue of Liberty": "USA",
+            "Amazon Rainforest": "Brazil",
+            "Sydney Opera House": "Australia"
+        };
+        let selectedPlace = null;
+        let selectedCountry = null;
+
+        const regions = {
+            "europe": {
+                title: "Europe Exploration",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Europe_geological_map.jpg/800px-Europe_geological_map.jpg",
+                questions: [
+                    { question: "What is the capital of France?", answer: "Paris" },
+                    { question: "Which mountain range separates Europe and Asia?", answer: "Ural Mountains" },
+                    { question: "Name a famous river in Europe.", answer: "Danube, Rhine, Thames" }
+                ]
+            },
+            "asia": {
+                title: "Asia Exploration",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Asia_satellite_orthographic_map.jpg/800px-Asia_satellite_orthographic_map.jpg",
+                questions: [
+                    { question: "What is the largest country in Asia?", answer: "Russia" },
+                    { question: "Which mountain range has the world's tallest peaks?", answer: "Himalayas" },
+                    { question: "Name a famous river in Asia.", answer: "Yangtze, Ganges, Mekong" }
+                ]
+            },
+            "africa": {
+                title: "Africa Exploration",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Africa_satellite_orthographic_map.jpg/800px-Africa_satellite_orthographic_map.jpg",
+                questions: [
+                    { question: "What is the longest river in Africa?", answer: "Nile" },
+                    { question: "Which desert covers a large part of North Africa?", answer: "Sahara" },
+                    { question: "Name a famous animal found in Africa.", answer: "Lion, Elephant, Giraffe" }
+                ]
+            },
+            "north-america": {
+                title: "North America Exploration",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/North_America_satellite_orthographic_map.jpg/800px-North_America_satellite_orthographic_map.jpg",
+                questions: [
+                    { question: "What is the capital of the United States?", answer: "Washington D.C." },
+                    { question: "Which mountain range runs along the western side of North America?", answer: "Rocky Mountains" },
+                    { question: "Name a famous natural wonder in North America.", answer: "Grand Canyon, Niagara Falls" }
+                ]
+            },
+            "south-america": {
+                title: "South America Exploration",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/South_America_satellite_orthographic_map.jpg/800px-South_America_satellite_orthographic_map.jpg",
+                questions: [
+                    { question: "What is the largest country in South America?", answer: "Brazil" },
+                    { question: "Which mountain range runs along the western side of South America?", answer: "Andes" },
+                    { question: "Name a famous rainforest in South America.", answer: "Amazon" }
+                ]
+            },
+            "australia": {
+                title: "Australia Exploration",
+                map: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Australia_satellite_orthographic_map.jpg/800px-Australia_satellite_orthographic_map.jpg",
+                questions: [
+                    { question: "What is the capital of Australia?", answer: "Canberra" },
+                    { question: "Name a famous natural wonder in Australia.", answer: "Great Barrier Reef"},
+                    { question: "Name a famous animal found in Australia.", answer: "Kangaroo, Koala" }
+                ]
+            }
+        };
+
+        function populateList(listId, items) {
+            const list = document.getElementById(listId);
+            items.forEach(item => {
+                const listItem = document.createElement("button");
+                listItem.classList.add("list-group-item", "list-group-item-action", "match-item");
+                if (listId === "places-list" && item.image) {
+                    const img = document.createElement("img");
+                    img.src = item.image;
+                    img.classList.add("match-image");
+                    listItem.prepend(img);
+                    listItem.textContent += item.name;
+
+                } else {
+                    listItem.textContent = item;
+                }
+                listItem.addEventListener("click", () => {
+                    if (listId === "places-list") {
+                        if (selectedPlace) selectedPlace.classList.remove("selected");
+                        selectedPlace = listItem;
+                        selectedPlace.classList.add("selected");
+                    } else {
+                        if (selectedCountry) selectedCountry.classList.remove("selected");
+                        selectedCountry = listItem;
+                        selectedCountry.classList.add("selected");
+                    }
+                });
+                list.appendChild(listItem);
+            });
+        }
+
+        populateList("places-list", places);
+        populateList("countries-list", countries);
+
+        document.getElementById("check-match").addEventListener("click", () => {
+            if (selectedPlace && selectedCountry) {
+                let placeName = selectedPlace.textContent;
+                if(selectedPlace.querySelector('img')) {
+                    placeName = selectedPlace.textContent.replace(places.find(place => place.image === selectedPlace.querySelector('img').src).name, '');
+                    placeName = places.find(place => place.image === selectedPlace.querySelector('img').src).name;
+                }
+                if (matches[placeName] === selectedCountry.textContent) {
+                    alert("Correct Match!");
+                    selectedPlace.classList.add("list-group-item-success");
+                    selectedCountry.classList.add("list-group-item-success");
+                } else {
+                    alert("Incorrect Match!");
+                    selectedPlace.classList.add("list-group-item-danger");
+                    selectedCountry.classList.add("list-group-item-danger");
+                }
+                selectedPlace = null;
+                selectedCountry = null;
+            } else {
+                alert("Please select both a place and a country.");
+            }
+        });
+
+        document.getElementById("region-select").addEventListener("change", (event) => {
+            const region = event.target.value;
+            if (region) {
+                const regionData = regions[region];
+                document.getElementById("region-title").textContent = regionData.title;
+                document.getElementById("region-map-img").src = regionData.map;
+                document.getElementById("question-container").innerHTML = ""; // Clear previous questions
+                regionData.questions.forEach(q => {
+                    const questionDiv = document.createElement("div");
+                    questionDiv.classList.add("mb-3");
+
+                    const questionLabel = document.createElement("label");
+                    questionLabel.textContent = q.question;
+                    questionLabel.classList.add("form-label");
+                    questionDiv.appendChild(questionLabel);
+
+                    const answerInput = document.createElement("input");
+                    answerInput.type = "text";
+                    answerInput.classList.add("form-control");
+                    questionDiv.appendChild(answerInput);
+
+                    const checkButton = document.createElement("button");
+                    checkButton.textContent = "Check Answer";
+                    checkButton.classList.add("btn", "btn-secondary", "mt-2");
+                    checkButton.addEventListener("click", () => {
+                        if (answerInput.value.toLowerCase() === q.answer.toLowerCase()) {
+                            alert("Correct!");
+                            answerInput.classList.add("is-valid");
+                        } else {
+                            alert("Incorrect. Try again!");
+                            answerInput.classList.add("is-invalid");
+                        }
+                    });
+                    questionDiv.appendChild(checkButton);
+
+                    document.getElementById("question-container").appendChild(questionDiv);
+                });
+                document.getElementById("region-questions").style.display = "block";
+            } else {
+                document.getElementById("region-questions").style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>

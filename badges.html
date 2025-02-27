@@ -1,0 +1,193 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Travel Explorer Quest - Badges</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    .badge-container {
+      position: relative;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .badge-img {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      transition: all 0.3s ease;
+      filter: grayscale(100%);
+      opacity: 0.6;
+    }
+    .badge-earned .badge-img {
+      filter: grayscale(0%);
+      opacity: 1;
+      box-shadow: 0 0 15px rgba(0, 200, 83, 0.8);
+    }
+    .badge-attempted .badge-img {
+      filter: grayscale(50%);
+      opacity: 0.8;
+    }
+    .badge-status {
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: white;
+      border-radius: 20px;
+      padding: 5px 15px;
+      font-size: 14px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    .badge-earned .badge-status {
+      background-color: #28a745;
+      color: white;
+    }
+    .badge-attempted .badge-status {
+      background-color: #ffc107;
+      color: black;
+    }
+    .progress {
+      height: 25px;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Travel Explorer Quest</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="map.html">Explore</a></li>
+                    <li class="nav-item"><a class="nav-link" href="badges.html">Badges</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+  <div class="container py-5">
+    <h1 class="mb-4">Explorer Badges</h1>
+    
+    <div class="progress mb-4">
+      <div class="progress-bar bg-success" role="progressbar" style="width: 30%;" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100">3/10 Badges (30%)</div>
+    </div>
+    
+    <div class="row">
+      <!-- Landmark Match - Earned -->
+      <div class="col-md-4 col-sm-6">
+        <div class="badge-container badge-earned">
+          <img src="badge.jpg" alt="Landmark Explorer Badge" class="badge-img">
+          <div class="badge-status">Earned!</div>
+          <h4 class="mt-3">Landmark Explorer</h4>
+          <p>Successfully matched 10 landmarks to their countries</p>
+        </div>
+      </div>
+      
+      <!-- Packing Game - Attempted -->
+      <div class="col-md-4 col-sm-6">
+        <div class="badge-container badge-attempted">
+          <img src="badge.jpg" alt="Smart Packer Badge" class="badge-img">
+          <div class="badge-status">Attempted</div>
+          <h4 class="mt-3">Smart Packer</h4>
+          <p>Packed correctly for 5 different climate destinations</p>
+        </div>
+      </div>
+      
+      <!-- Trivia Quiz - Earned -->
+      <div class="col-md-4 col-sm-6">
+        <div class="badge-container badge-earned">
+          <img src="badge.jpg" alt="Geography Genius Badge" class="badge-img">
+          <div class="badge-status">Earned!</div>
+          <h4 class="mt-3">Geography Genius</h4>
+          <p>Scored at least 80% on the world geography quiz</p>
+        </div>
+      </div>
+      
+      <!-- Photo Album - Not attempted -->
+      <div class="col-md-4 col-sm-6">
+        <div class="badge-container">
+          <img src="badge.jpg" alt="Photo Journalist Badge" class="badge-img">
+          <div class="badge-status">Not Started</div>
+          <h4 class="mt-3">Photo Journalist</h4>
+          <p>Created a photo album with at least 10 countries</p>
+        </div>
+      </div>
+      
+      <!-- Travel Talk - Earned -->
+      <div class="col-md-4 col-sm-6">
+        <div class="badge-container badge-earned">
+          <img src="badge.jpg" alt="Storyteller Badge" class="badge-img">
+          <div class="badge-status">Earned!</div>
+          <h4 class="mt-3">Storyteller</h4>
+          <p>Shared stories about 3 different travel experiences</p>
+        </div>
+      </div>
+      
+      <!-- GIF Creation - Not attempted -->
+      <div class="col-md-4 col-sm-6">
+        <div class="badge-container">
+          <img src="badge.jpg" alt="Digital Creator Badge" class="badge-img">
+          <div class="badge-status">Not Started</div>
+          <h4 class="mt-3">Digital Creator</h4>
+          <p>Created 5 interesting travel-themed GIFs</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // This would be replaced with actual storage and tracking logic
+    document.addEventListener("DOMContentLoaded", function() {
+      // Example of how to update a badge status
+      function updateBadgeStatus(badgeId, status) {
+        const badgeContainer = document.getElementById(badgeId);
+        if (badgeContainer) {
+          badgeContainer.className = "badge-container";
+          if (status === "earned") {
+            badgeContainer.classList.add("badge-earned");
+            badgeContainer.querySelector(".badge-status").textContent = "Earned!";
+          } else if (status === "attempted") {
+            badgeContainer.classList.add("badge-attempted");
+            badgeContainer.querySelector(".badge-status").textContent = "Attempted";
+          } else {
+            badgeContainer.querySelector(".badge-status").textContent = "Not Started";
+          }
+        }
+      }
+      
+      // Example of how to calculate and update progress
+      function updateProgress() {
+        const totalBadges = document.querySelectorAll(".badge-container").length;
+        const earnedBadges = document.querySelectorAll(".badge-earned").length;
+        const progressPercentage = Math.round((earnedBadges / totalBadges) * 100);
+        
+        const progressBar = document.querySelector(".progress-bar");
+        progressBar.style.width = `${progressPercentage}%`;
+        progressBar.textContent = `${earnedBadges}/${totalBadges} Badges (${progressPercentage}%)`;
+        progressBar.setAttribute("aria-valuenow", progressPercentage);
+      }
+      
+      // Add ID attributes to badges for easier targeting with JavaScript
+      const badgeContainers = document.querySelectorAll(".badge-container");
+      badgeContainers.forEach((container, index) => {
+        container.id = `badge-${index + 1}`;
+      });
+    });
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

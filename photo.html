@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unsplash API Demo</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <style>
+    .img-container {
+      height: 200px;
+      background-size: cover;
+      background-position: center;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">Travel Explorer Quest</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="map.html">Explore</a></li>
+                <li class="nav-item"><a class="nav-link" href="badges.html">Badges</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+  <div class="container py-4">
+    <header class="mb-4">
+      <div class="row align-items-center">
+        <div class="col-md-6">
+          <h2><i class="fas fa-camera text-warning"></i> Unsplash API Demo</h2>
+        </div>
+        <div class="col-md-6">
+          <div class="input-group">
+            <input type="text" id="input" class="form-control" placeholder="Search...">
+            <button class="btn btn-outline-secondary" type="button" id="search">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+    <div class="row" id="grid">
+      <!-- Images will be loaded here -->
+    </div>
+  </div>
+  <script src="photo.js"></script>
+ 
+</body>
+</html>

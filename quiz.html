@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geography Quiz for Grade 5</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .quiz-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .learning-card {
+            background-color: #f8f9fa;
+            border-left: 5px solid #0d6efd;
+        }
+
+        .question-card {
+            display: none;
+        }
+
+        .active-card {
+            display: block;
+        }
+
+        .result-card {
+            display: none;
+            background-color: #f0f8ff;
+        }
+
+        .choice-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            padding: 12px 20px;
+            transition: all 0.2s;
+            border: 1px solid #ced4da;
+            background-color: white;
+            font-size:16px;
+        }
+
+        .choice-btn:hover {
+            background-color: #e9ecef;
+        }
+
+        .selected {
+            background-color: #d1e7ff;
+        }
+
+        .correct {
+            background-color: #d4edda;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+        }
+
+        .progress {
+            height: 10px;
+            margin-bottom: 20px;
+        }
+
+        .map-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        #confetti {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+            pointer-events: none;
+            display: none;
+        }
+        .start-quiz-button{
+          padding: 15px 30px;
+          font-size: 1.2rem;
+          border-radius: 10px;
+          font-weight: bold;
+        }
+        .learning-content{
+          transition: opacity 0.5s ease-in-out, height 0.5s ease-in-out;
+        }
+        .learning-content.hidden {
+          opacity: 0;
+          height: 0;
+          overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">Travel Explorer Quest</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="map.html">Explore</a></li>
+                    <li class="nav-item"><a class="nav-link" href="badges.html">Badges</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container py-4">
+        <header class="text-center mb-4">
+            <h1><i class="fas fa-globe-americas text-primary"></i> Geography Quiz</h1>
+            <p class="lead">Test your knowledge about our amazing world!</p>
+        </header>
+
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+        </div>
+
+        <div class="card quiz-card learning-card active-card" id="learning-card">
+            <div class="card-header bg-primary text-white">
+                <h3>Key Geography Points to Remember</h3>
+            </div>
+            <div class="card-body">
+                <div class="learning-content" id="learning-content">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4><i class="fas fa-mountain text-secondary"></i> Continents</h4>
+                            <ul>
+                                <li>There are 7 continents: Africa, Antarctica, Asia, Australia, Europe, North America, and South America</li>
+                                <li>Asia is the largest continent and Australia is the smallest</li>
+                            </ul>
+
+                            <h4><i class="fas fa-water text-secondary"></i> Oceans</h4>
+                            <ul>
+                                <li>There are 5 oceans: Pacific, Atlantic, Indian, Southern, and Arctic</li>
+                                <li>The Pacific Ocean is the largest and deepest ocean</li>
+                            </ul>
+
+                            <h4><i class="fas fa-map-signs text-secondary"></i> Cardinal Directions</h4>
+                            <ul>
+                                <li>The four main directions are North, South, East, and West</li>
+                                <li>The sun rises in the East and sets in the West</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h4><i class="fas fa-map-marker-alt text-secondary"></i> Map Reading</h4>
+                            <ul>
+                                <li>Maps have scales that show distances</li>
+                                <li>A legend or key explains the symbols on a map</li>
+                                <li>Latitude lines run east-west, longitude lines run north-south</li>
+                            </ul>
+
+                            <h4><i class="fas fa-mountain text-secondary"></i> Landforms</h4>
+                            <ul>
+                                <li>Mountains, valleys, plains, plateaus, and deserts are major landforms</li>
+                                <li>Rivers always flow from higher to lower ground</li>
+                            </ul>
+
+                            <h4><i class="fas fa-cloud-sun text-secondary"></i> Climate</h4>
+                            <ul>
+                                <li>Areas near the equator are warmer than areas near the poles</li>
+                                <li>Climate affects what plants and animals can live in an area</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <button class="btn btn-primary start-quiz-button" onclick="startQuiz()">Start Quiz</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card quiz-card question-card" id="question-1">
+            <div class="card-header bg-info text-white">
+                <h3>Question 1</h3>
+            </div>
+            <div class="card-body">
+                <h4>Which of these is NOT one of the seven continents?</h4>
+                <img src="/api/placeholder/500/300" alt="World map" class="map-image">
+                <div class="choices">
+                    <button class="choice-btn" data-correct="false">Antarctica</button>
+                    <button class="choice-btn" data-correct="false">Australia</button>
+                    <button class="choice-btn" data-correct="true">Arctic</button>
+                    <button class="choice-btn" data-correct="false">Africa</button>
+                </div>
+                <div class="explanation mt-3" style="display: none;">
+                    <div class="alert alert-info">
+                        <p><strong>Explanation:</strong> The Arctic is not a continent - it's a region around the North Pole. The seven continents are Africa, Antarctica, Asia, Australia, Europe, North America, and South America.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button class="btn btn-secondary" onclick="checkAnswer(1)" id="check-btn-1">Check Answer</button>
+                <button class="btn btn-primary float-end" onclick="nextQuestion(1)" style="display: none;" id="next-btn-1">Next Question</button>
+            </div>
+        </div>
+
+        <div class="card quiz-card question-card" id="question-2">
+            <div class="card-header bg-info text-white">
+              <h3>Question 2</h3>
+            </div>
+            <div class="card-body">
+              <h4>Which ocean is the largest?</h4>
+              <img src="/api/placeholder/500/300" alt="Ocean map" class="map-image">
+              <div class="choices">
+                <button class="choice-btn" data-correct="false">Atlantic Ocean</button>
+                <button class="choice-btn" data-correct="true">Pacific Ocean</button>
+                <button class="choice-btn" data-correct="false">Indian Ocean</button>
+                <button class="choice-btn" data-correct="false">Arctic Ocean</button>
+              </div>
+              <div class="explanation mt-3" style="display: none;">
+                <div class="alert alert-info">
+                  <p><strong>Explanation:</strong> The Pacific Ocean is the largest and deepest ocean on Earth. It covers more than 30% of the Earth's surface.</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-secondary" onclick="checkAnswer(2)" id="check-btn-2">Check Answer</button>
+              <button class="btn btn-primary float-end" onclick="nextQuestion(2)" style="display: none;" id="next-btn-2">Next Question</button>
+            </div>
+          </div>
+          
+          <div class="card quiz-card question-card" id="question-3">
+            <div class="card-header bg-info text-white">
+              <h3>Question 3</h3>
+            </div>
+            <div class="card-body">
+              <h4>If you're facing North, which direction is to your right?</h4>
+              <img src="/api/placeholder/500/300" alt="Compass" class="map-image">
+              <div class="choices">
+                <button class="choice-btn" data-correct="false">West</button>
+                <button class="choice-btn" data-correct="true">East</button>
+                <button class="choice-btn" data-correct="false">South</button>
+                <button class="choice-btn" data-correct="false">Northeast</button>
+              </div>
+              <div class="explanation mt-3" style="display: none;">
+                <div class="alert alert-info">
+                  <p><strong>Explanation:</strong> When facing North, East is to your right, West is to your left, and South is behind you.</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-secondary" onclick="checkAnswer(3)" id="check-btn-3">Check Answer</button>
+              <button class="btn btn-primary float-end" onclick="nextQuestion(3)" style="display: none;" id="next-btn-3">Next Question</button>
+            </div>
+          </div>
+          
+          <div class="card quiz-card question-card" id="question-4">
+            <div class="card-header bg-info text-white">
+              <h3>Question 4</h3>
+            </div>
+            <div class="card-body">
+              <h4>Which of these landforms is formed by a river over time?</h4>
+              <img src="/api/placeholder/500/300" alt="Landforms" class="map-image">
+              <div class="choices">
+                <button class="choice-btn" data-correct="false">Mountain</button>
+                <button class="choice-btn" data-correct="false">Volcano</button>
+                <button class="choice-btn" data-correct="true">Canyon</button>
+                <button class="choice-btn" data-correct="false">Plateau</button>
+              </div>
+              <div class="explanation mt-3" style="display: none;">
+                <div class="alert alert-info">
+                  <p><strong>Explanation:</strong> Canyons are formed when rivers cut through rock over long periods of time. The Grand Canyon in the United States was formed by the Colorado River.</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-secondary" onclick="checkAnswer(4)" id="check-btn-4">Check Answer</button>
+              <button class="btn btn-primary float-end" onclick="nextQuestion(4)" style="display: none;" id="next-btn-4">Next Question</button>
+            </div>
+          </div>
+          
+          <div class="card quiz-card question-card" id="question-5">
+            <div class="card-header bg-info text-white">
+              <h3>Question 5</h3>
+            </div>
+            <div class="card-body">
+              <h4>What lines on a map run north to south?</h4>
+              <img src="/api/placeholder/500/300" alt="Map grid" class="map-image">
+              <div class="choices">
+                <button class="choice-btn" data-correct="false">Latitude</button>
+                <button class="choice-btn" data-correct="true">Longitude</button>
+                <button class="choice-btn" data-correct="false">Equator</button>
+                <button class="choice-btn" data-correct="false">Prime Meridian</button>
+              </div>
+              <div class="explanation mt-3" style="display: none;">
+                <div class="alert alert-info">
+                  <p><strong>Explanation:</strong> Longitude lines run north to south. Latitude lines run east to west. The Prime Meridian is a specific longitude line (0°), and the Equator is a specific latitude line (0°).</p>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-secondary" onclick="checkAnswer(5)" id="check-btn-5">Check Answer</button>
+              <button class="btn btn-primary float-end" onclick="nextQuestion(5)" style="display: none;" id="next-btn-5">Next Question</button>
+            </div>
+          </div>
+          
+          <!-- Results Card -->
+          <div class="card quiz-card result-card" id="result-card">
+            <div class="card-header bg-success text-white">
+              <h3>Quiz Results</h3>
+            </div>
+            <div class="card-body text-center">
+              <h4>Your Score: <span id="score">0</span> out of 5</h4>
+              <div id="result-message" class="mt-3 mb-4"></div>
+              <div class="row">
+                <div class="col-md-6 offset-md-3">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Question</th>
+                        <th>Result</th>
+                      </tr>
+                    </thead>
+                    <tbody id="result-table">
+                      <!-- Results will be added here -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <button class="btn btn-primary" onclick="restartQuiz()">Try Again</button>
+            </div>
+          </div>
+          
+        </div>
+        
+        <canvas id="confetti"></canvas>
+        
+        <script>
+          let score = 0;
+          let answers = [null, null, null, null, null]; // Stores user's answers
+          
+          function startQuiz() {
+            document.getElementById('learning-card').classList.remove('active-card');
+            document.getElementById('question-1').classList.add('active-card');
+            updateProgress(1);
+          }
+          
+          function selectChoice(questionNum, choiceBtn) {
+            // Remove selected class from all choices
+            const choices = document.querySelectorAll(`#question-${questionNum} .choice-btn`);
+            choices.forEach(btn => btn.classList.remove('selected'));
+            
+            // Add selected class to clicked button
+            choiceBtn.classList.add('selected');
+          }
+          
+          function checkAnswer(questionNum) {
+            const selectedBtn = document.querySelector(`#question-${questionNum} .choice-btn.selected`);
+            
+            if (!selectedBtn) {
+              alert("Please select an answer!");
+              return;
+            }
+            
+            // Disable all choice buttons
+            const choices = document.querySelectorAll(`#question-${questionNum} .choice-btn`);
+            choices.forEach(btn => {
+              btn.disabled = true;
+              if (btn.getAttribute('data-correct') === 'true') {
+                btn.classList.add('correct');
+              }
+            });
+            
+            // Mark selected button as correct or incorrect
+            const isCorrect = selectedBtn.getAttribute('data-correct') === 'true';
+            if (isCorrect) {
+              selectedBtn.classList.add('correct');
+              score++;
+            } else {
+              selectedBtn.classList.add('incorrect');
+            }
+            
+            // Store the answer result
+            answers[questionNum-1] = isCorrect;
+            
+            // Show explanation
+            document.querySelector(`#question-${questionNum} .explanation`).style.display = 'block';
+            
+            // Hide check button and show next button
+            document.getElementById(`check-btn-${questionNum}`).style.display = 'none';
+            document.getElementById(`next-btn-${questionNum}`).style.display = 'inline-block';
+          }
+          
+          function nextQuestion(questionNum) {
+            document.getElementById(`question-${questionNum}`).classList.remove('active-card');
+            
+            if (questionNum < 5) {
+              // Go to next question
+              document.getElementById(`question-${questionNum+1}`).classList.add('active-card');
+              updateProgress(questionNum+1);
+            } else {
+              // Show results
+              showResults();
+            }
+          }
+          
+          function updateProgress(questionNum) {
+            const percentage = (questionNum / 5) * 100;
+            document.querySelector('.progress-bar').style.width = `${percentage}%`;
+          }
+          
+          function showResults() {
+            // Update score display
+            document.getElementById('score').textContent = score;
+            
+            // Create result message
+            let message = '';
+            if (score === 5) {
+              message = '<div class="alert alert-success"><h4>Perfect Score! Amazing job!</h4><p>You\'re a geography expert!</p></div>';
+              setTimeout(() => {
+                showConfetti();
+              }, 500);
+            } else if (score >= 3) {
+              message = '<div class="alert alert-info"><h4>Great job!</h4><p>You have a good understanding of geography!</p></div>';
+            } else {
+              message = '<div class="alert alert-warning"><h4>Nice try!</h4><p>Review the key points and try again to improve your score.</p></div>';
+            }
+            document.getElementById('result-message').innerHTML = message;
+            
+            // Create result table
+            let tableHTML = '';
+            for (let i = 0; i < 5; i++) {
+              const questionNum = i + 1;
+              const resultIcon = answers[i] ? 
+                '<i class="fas fa-check text-success"></i>' : 
+                '<i class="fas fa-times text-danger"></i>';
+              tableHTML += `<tr><td>Question ${questionNum}</td><td>${resultIcon}</td></tr>`;
+            }
+            document.getElementById('result-table').innerHTML = tableHTML;
+            
+            // Show result card
+            document.getElementById('result-card').style.display = 'block';
+            updateProgress(5);
+          }
+          
+          function restartQuiz() {
+            // Reset score and answers
+            score = 0;
+            answers = [null, null, null, null, null];
+            
+            // Hide result card
+            document.getElementById('result-card').style.display = 'none';
+            
+            // Reset all questions
+            for (let i = 1; i <= 5; i++) {
+              // Remove active class
+              document.getElementById(`question-${i}`).classList.remove('active-card');
+              
+              // Reset choice buttons
+              const choices = document.querySelectorAll(`#question-${i} .choice-btn`);
+              choices.forEach(btn => {
+                btn.classList.remove('selected', 'correct', 'incorrect');
+                btn.disabled = false;
+              });
+              
+              // Hide explanation
+              document.querySelector(`#question-${i} .explanation`).style.display = 'none';
+              
+              // Show check button and hide next button
+              document.getElementById(`check-btn-${i}`).style.display = 'inline-block';
+              document.getElementById(`next-btn-${i}`).style.display = 'none';
+            }
+            
+            // Show learning card
+            document.getElementById('learning-card').classList.add('active-card');
+            
+            // Reset progress bar
+            document.querySelector('.progress-bar').style.width = '0%';
+          }
+          
+          // Add event listeners to choice buttons
+          document.addEventListener('DOMContentLoaded', function() {
+            const choiceBtns = document.querySelectorAll('.choice-btn');
+            choiceBtns.forEach(btn => {
+              btn.addEventListener('click', function() {
+                const questionCard = this.closest('.question-card');
+                const questionNum = questionCard.id.split('-')[1];
+                selectChoice(questionNum, this);
+              });
+            });
+          });
+          
+          // Simple confetti effect for perfect score
+          function showConfetti() {
+            const canvas = document.getElementById('confetti');
+            canvas.style.display = 'block';
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            const ctx = canvas.getContext('2d');
+            const pieces = [];
+            const numberOfPieces = 200;
+            const colors = ['#f44336', '#e91e63', '#9c27b0', '#673ab7', '#3f51b5', '#2196f3', '#03a9f4', '#00bcd4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B', '#FFC107', '#FF9800', '#FF5722'];
+            
+            for (let i = 0; i < numberOfPieces; i++) {
+              pieces.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                rotation: Math.random() * 360,
+                size: Math.random() * 15 + 5,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speed: Math.random() * 3 + 2
+              });
+            }
+            
+            function update() {
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              
+              pieces.forEach(piece => {
+                piece.y += piece.speed;
+                piece.rotation += 2;
+                
+                ctx.save();
+                ctx.beginPath();
+                ctx.translate(piece.x, piece.y);
+                ctx.rotate(piece.rotation * Math.PI / 180);
+                ctx.fillStyle = piece.color;
+                ctx.fillRect(-piece.size / 2, -piece.size / 2, piece.size, piece.size);
+                ctx.restore();
+                
+                if (piece.y > canvas.height) {
+                  piece.y = -piece.size;
+                  piece.x = Math.random() * canvas.width;
+                }
+              });
+              
+              requestAnimationFrame(update);
+            }
+            
+            update();
+            
+            setTimeout(() => {
+              canvas.style.display = 'none';
+            }, 5000);
+          }
+        </script>
+        
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+      </body>
+      </html>
