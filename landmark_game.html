@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,6 +23,11 @@
             max-width: 100%;
             height: auto;
         }
+        .match-image{
+            max-width: 80px;
+            height: auto;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -36,7 +39,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="map.html">Explore</a></li>
+                    <li class="nav-item"><a class="nav-link" href="challenges.html">Challenges</a></li>
                     <li class="nav-item"><a class="nav-link" href="badges.html">Badges</a></li>
                 </ul>
             </div>
@@ -83,7 +86,14 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        const places = ["Eiffel Tower", "Great Wall", "Pyramids of Giza", "Statue of Liberty", "Amazon Rainforest", "Sydney Opera House"];
+        const places = [
+            { name: "Eiffel Tower", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Tour_Eiffel_Wikimedia_Commons.jpg/800px-Tour_Eiffel_Wikimedia_Commons.jpg" },
+            { name: "Great Wall", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/2009-0522-China-8457_Great_Wall_near_Jinshanling.jpg/800px-2009-0522-China-8457_Great_Wall_near_Jinshanling.jpg" },
+            { name: "Pyramids of Giza", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Giza_pyramids.jpg/800px-Giza_pyramids.jpg" },
+            { name: "Statue of Liberty", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Statue_of_Liberty_7_%28vertical%29.jpg/800px-Statue_of_Liberty_7_%28vertical%29.jpg" },
+            { name: "Amazon Rainforest", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Amazon_rainforest_near_Tef%C3%A9.jpg/800px-Amazon_rainforest_near_Tef%C3%A9.jpg" },
+            { name: "Sydney Opera House", image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Sydney_Opera_House_Sails.jpg/800px-Sydney_Opera_House_Sails.jpg" }
+        ];
         const countries = ["France", "China", "Egypt", "USA", "Brazil", "Australia"];
         const matches = {
             "Eiffel Tower": "France",
@@ -147,7 +157,7 @@
                 map: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Australia_satellite_orthographic_map.jpg/800px-Australia_satellite_orthographic_map.jpg",
                 questions: [
                     { question: "What is the capital of Australia?", answer: "Canberra" },
-                    { question: "Name a famous natural wonder in Australia.", answer: "Great Barrier Reef, Uluru" },
+                    { question: "Name a famous natural wonder in Australia.", answer: "Great Barrier Reef"},
                     { question: "Name a famous animal found in Australia.", answer: "Kangaroo, Koala" }
                 ]
             }
@@ -158,7 +168,16 @@
             items.forEach(item => {
                 const listItem = document.createElement("button");
                 listItem.classList.add("list-group-item", "list-group-item-action", "match-item");
-                listItem.textContent = item;
+                if (listId === "places-list" && item.image) {
+                    const img = document.createElement("img");
+                    img.src = item.image;
+                    img.classList.add("match-image");
+                    listItem.prepend(img);
+                    listItem.textContent += item.name;
+
+                } else {
+                    listItem.textContent = item;
+                }
                 listItem.addEventListener("click", () => {
                     if (listId === "places-list") {
                         if (selectedPlace) selectedPlace.classList.remove("selected");
@@ -179,7 +198,12 @@
 
         document.getElementById("check-match").addEventListener("click", () => {
             if (selectedPlace && selectedCountry) {
-                if (matches[selectedPlace.textContent] === selectedCountry.textContent) {
+                let placeName = selectedPlace.textContent;
+                if(selectedPlace.querySelector('img')) {
+                    placeName = selectedPlace.textContent.replace(places.find(place => place.image === selectedPlace.querySelector('img').src).name, '');
+                    placeName = places.find(place => place.image === selectedPlace.querySelector('img').src).name;
+                }
+                if (matches[placeName] === selectedCountry.textContent) {
                     alert("Correct Match!");
                     selectedPlace.classList.add("list-group-item-success");
                     selectedCountry.classList.add("list-group-item-success");
